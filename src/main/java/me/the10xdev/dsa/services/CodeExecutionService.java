@@ -4,6 +4,7 @@ import com.github.codeboy.piston4j.api.ExecutionOutput;
 import com.github.codeboy.piston4j.api.ExecutionResult;
 import lombok.AllArgsConstructor;
 import me.the10xdev.dsa.core.CodeExecutor;
+import me.the10xdev.dsa.exceptions.parse.ParsingException;
 import me.the10xdev.dsa.judge.parser.ParserFactory;
 import me.the10xdev.dsa.judge.parser.ResultParser;
 import me.the10xdev.dsa.judge.parser_output.ParserOutput;
@@ -60,8 +61,9 @@ public class CodeExecutionService {
 
         if (result.status() == Status.FAILED) {
             return new ValidationResult(Status.FAILED, result.output());
-        } else {
+        }
 
+        try {
             ResultParser parser = parserFactory.getFactory(outputType);
             ParserOutput parsedUserOutput = parser.parse(result.output());
             ParserOutput expectedParsedOutput = parser.parse(result.testCase().getOutput());
@@ -74,7 +76,9 @@ public class CodeExecutionService {
             } else {
                 return new ValidationResult(Status.SUCCESS, "Test Case Passed");
             }
-
+        } catch (ParsingException ex) {
+            return new ValidationResult(Status.FAILED, ex.getMessage());
         }
+
     }
 }

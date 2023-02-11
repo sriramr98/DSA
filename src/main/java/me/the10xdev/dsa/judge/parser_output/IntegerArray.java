@@ -1,4 +1,5 @@
 package me.the10xdev.dsa.judge.parser_output;
 
-public class IntegerArray implements ParserOutput {
-}
+import java.util.List;
+
+public record IntegerArray(List<Integer> values) implements ParserOutput { }
