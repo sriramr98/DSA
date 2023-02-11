@@ -37,7 +37,7 @@ public class CodeExecutionService {
         List<CompletableFuture<ExecutionResult>> allExecutions = new ArrayList<>();
 
         testCases.forEach(testCase -> {
-            userCode.insertInput(testCase.getInput().toString());
+            userCode.insertInput(testCase.getInputJSON());
             allExecutions.add(codeExecutor.executeCode(userCode));
         });
 

@@ -1,13 +1,14 @@
 package me.the10xdev.dsa.exceptions.parse;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
+import me.the10xdev.dsa.types.IOType;
 
-@AllArgsConstructor
+@Builder
 public class ParsingException extends Exception {
 
     private final String value;
-    private final String expectedType;
-    private final String foundType;
+    private final IOType expectedType;
+    private final IOType foundType;
 
     @Override
     public String getMessage() {

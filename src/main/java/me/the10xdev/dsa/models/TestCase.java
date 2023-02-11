@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class TestCase {
 
-    private JsonNode input;
+    private String inputJSON;
     private String output;
     private int expectedMemory;
     private int expectedTime;

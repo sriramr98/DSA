@@ -1,0 +1,12 @@
+repos:
+    - repo: https://github.com/gitguardian/ggshield
+      rev: v1.14.3
+      hooks:
+        - id: ggshield
+          language_version: python3
+          stages: [ commit ]
+    - repo: https://github.com/ejba/pre-commit-maven
+      rev: v0.3.3
+      hooks:
+        - id: maven-test
+          stages: [commit]

@@ -93,7 +93,7 @@ public class DsaApplication {
 						.optimalMetaDescription("where n is the length of the array")
 						.runTestCases(
 								List.of(new TestCase(
-										JacksonUtil.toJsonNode("{\"target\": 7, \"array\": [2,5]}"),
+										"{\"target\": 7, \"array\": [2,5]}",
 										"[0,1]",
 										100,
 										100
@@ -101,7 +101,7 @@ public class DsaApplication {
 						)
 						.submitTestCases(
 								List.of(new TestCase(
-										JacksonUtil.toJsonNode("{\"target\": 7, \"array\": [2,5]}"),
+										"{\"target\": 7, \"array\": [2,5]}",
 										"[0,1]",
 										100,
 										100
