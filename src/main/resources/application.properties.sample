@@ -1,0 +1,13 @@
+server.port=8080
+
+#Postgres Props
+spring.datasource.platform=postgres
+spring.datasource.url=jdbc:postgresql://localhost:5432/dsa
+spring.datasource.username=dsatest
+spring.datasource.password=dsatest
+
+spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
+
+# Firebase Props
+spring.security.oauth2.resourceserver.jwt.jwk-set-uri=https://www.googleapis.com/service_accounts/v1/jwk/securetoken%40system.gserviceaccount.com
+spring.security.oauth2.resourceserver.jwt.issuer-uri=https://securetoken.google.com/<project_id>

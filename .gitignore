@@ -36,3 +36,4 @@ build/
 data/
 
 client_secret_1039691607657-5ptsmc87e0u5dl71404qko3etui1mhi5.apps.googleusercontent.com.json
+src/main/resources/application.properties
