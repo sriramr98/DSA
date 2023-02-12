@@ -1,7 +1,7 @@
 package me.the10xdev.dsa.judge.validators.int_array;
 
 import lombok.AllArgsConstructor;
-import me.the10xdev.dsa.judge.parser_output.IntegerArray;
+import me.the10xdev.dsa.judge.parser_output.compound.IntegerArray;
 import me.the10xdev.dsa.judge.validators.ResultValidator;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;

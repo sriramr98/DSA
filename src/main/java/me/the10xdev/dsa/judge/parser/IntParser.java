@@ -1,7 +1,7 @@
 package me.the10xdev.dsa.judge.parser;
 
 import me.the10xdev.dsa.exceptions.parse.ParsingException;
-import me.the10xdev.dsa.judge.parser_output.NativeInt;
+import me.the10xdev.dsa.judge.parser_output.basic.NativeInt;
 import me.the10xdev.dsa.types.IOType;
 import me.the10xdev.dsa.utils.TypeInferer;
 import org.springframework.stereotype.Component;

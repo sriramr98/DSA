@@ -2,10 +2,14 @@ package me.the10xdev.dsa.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeType;
 import me.the10xdev.dsa.types.IOType;
 
+import java.util.List;
+
 public final class TypeInferer {
+
+    private static final List<String> boolean_list = List.of("true", "false", "True", "False");
+
 
     public static IOType inferType(String input) {
 
@@ -48,7 +52,7 @@ public final class TypeInferer {
     }
 
     public static boolean isBool(String input) {
-        return input.equals("true") || input.equals("True") || input.equals("false") || input.equals("False");
+        return boolean_list.contains(input);
     }
 
     public static boolean isFloat(String input) {

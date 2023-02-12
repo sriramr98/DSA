@@ -1,32 +1,33 @@
 package me.the10xdev.dsa.parsers;
 
 import me.the10xdev.dsa.exceptions.parse.ParsingException;
-import me.the10xdev.dsa.judge.parser.IntArrayParser;
-import me.the10xdev.dsa.judge.parser_output.compound.IntegerArray;
+import me.the10xdev.dsa.judge.parser.FloatArrayParser;
+import me.the10xdev.dsa.judge.parser_output.compound.FloatArray;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class IntArrayParserTests {
+public class FloatArrayParserTests {
 
-    private static IntArrayParser parser;
+    private static FloatArrayParser parser;
 
     @BeforeAll
     static void setupParser() {
-        parser = new IntArrayParser();
+        parser = new FloatArrayParser();
     }
 
     @Test
     void returnsParsedArrayForValidInput() {
 
-        String validInput = "[1,2,3,4]";
+        String validInput = "[1.2,2.4,3.5,4.5]";
 
-        IntegerArray parsedValue = assertDoesNotThrow(() -> parser.parse(validInput));
+        FloatArray parsedValue = assertDoesNotThrow(() -> parser.parse(validInput));
 
-        List<Integer> expected = List.of(1,2,3,4);
+        List<Float> expected = List.of(1.2f,2.4f,3.5f,4.5f);
 
         assertEquals(expected.size(), parsedValue.values().size());
         assertIterableEquals(expected, parsedValue.values());
@@ -39,8 +40,8 @@ public class IntArrayParserTests {
     }
 
     @Test
-    void throwsForFloatArray() {
-        assertParsingException("[1.2, 2.5]");
+    void throwsForIntegerArray() {
+        assertParsingException("[2,4]");
     }
 
     @Test
@@ -50,7 +51,7 @@ public class IntArrayParserTests {
 
     @Test
     void throwForBooleanElementTypeInArray() {
-        assertParsingException("[4, true]");
+        assertParsingException("[4.4, true]");
     }
 
     @Test
@@ -64,8 +65,8 @@ public class IntArrayParserTests {
     }
 
     @Test
-    void throwForIntegerInput() {
-        assertParsingException("123");
+    void throwForFloatInput() {
+        assertParsingException("123.423");
     }
 
     @Test
@@ -79,5 +80,5 @@ public class IntArrayParserTests {
                 () -> parser.parse(input)
         );
     }
-
+    
 }

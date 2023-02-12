@@ -3,7 +3,7 @@ package me.the10xdev.dsa.judge.parser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import me.the10xdev.dsa.exceptions.parse.ParsingException;
-import me.the10xdev.dsa.judge.parser_output.StringArray;
+import me.the10xdev.dsa.judge.parser_output.compound.StringArray;
 import me.the10xdev.dsa.types.IOType;
 import me.the10xdev.dsa.utils.JsonParser;
 import me.the10xdev.dsa.utils.TypeInferer;
@@ -45,7 +45,7 @@ public class StringArrayParser implements ResultParser {
 
         for (JsonNode element : json) {
 
-            if (!element.isTextual()) {
+            if (!element.isValueNode() || !element.isTextual()) {
                 throw ParsingException.builder()
                         .value(element.asText())
                         .expectedType(IOType.STRING)

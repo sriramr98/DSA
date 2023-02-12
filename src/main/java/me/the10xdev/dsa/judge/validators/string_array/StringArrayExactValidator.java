@@ -1,9 +1,8 @@
 package me.the10xdev.dsa.judge.validators.string_array;
 
 import lombok.AllArgsConstructor;
-import me.the10xdev.dsa.judge.parser_output.StringArray;
+import me.the10xdev.dsa.judge.parser_output.compound.StringArray;
 import me.the10xdev.dsa.judge.validators.ResultValidator;
-import me.the10xdev.dsa.types.ValidationType;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;

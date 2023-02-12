@@ -2,7 +2,7 @@ package me.the10xdev.dsa.parsers;
 
 import me.the10xdev.dsa.exceptions.parse.ParsingException;
 import me.the10xdev.dsa.judge.parser.IntParser;
-import me.the10xdev.dsa.judge.parser_output.NativeInt;
+import me.the10xdev.dsa.judge.parser_output.basic.NativeInt;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

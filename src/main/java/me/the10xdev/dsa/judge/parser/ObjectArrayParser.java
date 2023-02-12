@@ -3,7 +3,7 @@ package me.the10xdev.dsa.judge.parser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import me.the10xdev.dsa.exceptions.parse.ParsingException;
-import me.the10xdev.dsa.judge.parser_output.compound.IntegerArray;
+import me.the10xdev.dsa.judge.parser_output.compound.ObjectArray;
 import me.the10xdev.dsa.types.IOType;
 import me.the10xdev.dsa.utils.JsonParser;
 import me.the10xdev.dsa.utils.TypeInferer;
@@ -16,9 +16,10 @@ import java.util.List;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-public class IntArrayParser  implements ResultParser {
+public class ObjectArrayParser implements ResultParser {
+
     @Override
-    public IntegerArray parse(String input) throws ParsingException {
+    public ObjectArray parse(String input) throws ParsingException {
 
         JsonNode json;
         try {
@@ -26,7 +27,7 @@ public class IntArrayParser  implements ResultParser {
         } catch (JsonProcessingException e) {
             throw ParsingException.builder()
                     .value(input)
-                    .expectedType(IOType.ARRAY_INT)
+                    .expectedType(IOType.ARRAY_OBJECT)
                     .foundType(TypeInferer.inferType(input))
                     .build();
         }
@@ -34,25 +35,36 @@ public class IntArrayParser  implements ResultParser {
         if (!json.isArray()) {
             throw ParsingException.builder()
                     .value(input)
-                    .expectedType(IOType.ARRAY_INT)
+                    .expectedType(IOType.ARRAY_OBJECT)
                     .foundType(IOType.OBJECT)
                     .build();
         }
 
-        List<Integer> parsedIntArray = new ArrayList<>();
+        List<JsonNode> parsedObjectArray = new ArrayList<>();
 
         for (JsonNode element : json) {
-            if (!element.isInt()) {
+            if (element.isValueNode() || element.isArray()) {
                 throw ParsingException.builder()
                         .value(input)
-                        .expectedType(IOType.INTEGER)
+                        .expectedType(IOType.BOOLEAN)
                         .foundType(TypeInferer.inferType(input))
                         .build();
             }
 
-            parsedIntArray.add(element.asInt());
+            try {
+                parsedObjectArray.add(JsonParser.parse(element.toString()));
+            } catch (JsonProcessingException ex) {
+                throw ParsingException.builder()
+                        .value(element.toString())
+                        .expectedType(IOType.OBJECT)
+                        .foundType(TypeInferer.inferType(element.toString()))
+                        .build();
+            }
+
         }
 
-        return new IntegerArray(parsedIntArray);
+        return new ObjectArray(parsedObjectArray);
+
     }
+
 }
