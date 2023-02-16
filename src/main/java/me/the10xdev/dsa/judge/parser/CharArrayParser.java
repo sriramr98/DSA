@@ -16,44 +16,26 @@ import java.util.List;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-public class CharArrayParser implements ResultParser {
+public class CharArrayParser extends ArrayParser<CharArray, Character> {
 
     @Override
-    public CharArray parse(String input) throws ParsingException {
-        JsonNode json;
-        try {
-            json = JsonParser.parse(input);
-        } catch (JsonProcessingException e) {
-            throw ParsingException.builder()
-                    .value(input)
-                    .expectedType(IOType.ARRAY_CHAR)
-                    .foundType(TypeInferer.inferType(input))
-                    .build();
-        }
+    boolean isValidType(JsonNode element) {
+        return TypeInferer.isChar(element.asText());
+    }
 
-        if (!json.isArray()) {
-            throw ParsingException.builder()
-                    .value(input)
-                    .expectedType(IOType.ARRAY_CHAR)
-                    .foundType(IOType.OBJECT)
-                    .build();
-        }
+    @Override
+    Character parseNode(JsonNode element) {
+        return element.asText().charAt(0);
+    }
 
-        List<Character> parsedCharArray = new ArrayList<>();
+    @Override
+    CharArray toArray(List<Character> values) {
+        return new CharArray(values);
+    }
 
-        for (JsonNode element : json) {
-            if (!TypeInferer.isChar(element.asText())) {
-                throw ParsingException.builder()
-                        .value(input)
-                        .expectedType(IOType.CHAR)
-                        .foundType(TypeInferer.inferType(input))
-                        .build();
-            }
-
-            parsedCharArray.add(element.asText().charAt(0));
-        }
-
-        return new CharArray(parsedCharArray);
+    @Override
+    IOType getExpectedArrayElementType() {
+        return IOType.CHAR;
     }
 
 }

@@ -16,55 +16,26 @@ import java.util.List;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-public class ObjectArrayParser implements ResultParser {
+public class ObjectArrayParser extends ArrayParser<ObjectArray, JsonNode> {
 
     @Override
-    public ObjectArray parse(String input) throws ParsingException {
+    boolean isValidType(JsonNode element) {
+        return !element.isValueNode() && !element.isArray();
+    }
 
-        JsonNode json;
-        try {
-            json = JsonParser.parse(input);
-        } catch (JsonProcessingException e) {
-            throw ParsingException.builder()
-                    .value(input)
-                    .expectedType(IOType.ARRAY_OBJECT)
-                    .foundType(TypeInferer.inferType(input))
-                    .build();
-        }
+    @Override
+    JsonNode parseNode(JsonNode element) {
+        return element;
+    }
 
-        if (!json.isArray()) {
-            throw ParsingException.builder()
-                    .value(input)
-                    .expectedType(IOType.ARRAY_OBJECT)
-                    .foundType(IOType.OBJECT)
-                    .build();
-        }
+    @Override
+    ObjectArray toArray(List<JsonNode> values) {
+        return new ObjectArray(values);
+    }
 
-        List<JsonNode> parsedObjectArray = new ArrayList<>();
-
-        for (JsonNode element : json) {
-            if (element.isValueNode() || element.isArray()) {
-                throw ParsingException.builder()
-                        .value(input)
-                        .expectedType(IOType.BOOLEAN)
-                        .foundType(TypeInferer.inferType(input))
-                        .build();
-            }
-
-            try {
-                parsedObjectArray.add(JsonParser.parse(element.toString()));
-            } catch (JsonProcessingException ex) {
-                throw ParsingException.builder()
-                        .value(element.toString())
-                        .expectedType(IOType.OBJECT)
-                        .foundType(TypeInferer.inferType(element.toString()))
-                        .build();
-            }
-
-        }
-
-        return new ObjectArray(parsedObjectArray);
-
+    @Override
+    IOType getExpectedArrayElementType() {
+        return IOType.OBJECT;
     }
 
 }

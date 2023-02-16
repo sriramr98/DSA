@@ -16,46 +16,25 @@ import java.util.List;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-public class StringArrayParser implements ResultParser {
+public class StringArrayParser extends ArrayParser<StringArray, String> {
 
     @Override
-    public StringArray parse(String input) throws ParsingException {
+    boolean isValidType(JsonNode element) {
+        return element.isValueNode() && element.isTextual();
+    }
 
-        JsonNode json;
-        try {
-            json = JsonParser.parse(input);
-        } catch (JsonProcessingException e) {
-            throw ParsingException.builder()
-                    .value(input)
-                    .expectedType(IOType.ARRAY_STRING)
-                    .foundType(TypeInferer.inferType(input))
-                    .build();
-        }
+    @Override
+    String parseNode(JsonNode element) {
+        return element.asText();
+    }
 
+    @Override
+    StringArray toArray(List<String> values) {
+        return new StringArray(values);
+    }
 
-        if (!json.isArray()) {
-            throw ParsingException.builder()
-                    .value(input)
-                    .expectedType(IOType.ARRAY_STRING)
-                    .foundType(IOType.OBJECT)
-                    .build();
-        }
-
-        List<String> parsedStringArray = new ArrayList<>();
-
-        for (JsonNode element : json) {
-
-            if (!element.isValueNode() || !element.isTextual()) {
-                throw ParsingException.builder()
-                        .value(element.asText())
-                        .expectedType(IOType.STRING)
-                        .foundType(TypeInferer.inferType(input))
-                        .build();
-            }
-
-            parsedStringArray.add(element.asText());
-        }
-
-        return new StringArray(parsedStringArray);
+    @Override
+    IOType getExpectedArrayElementType() {
+        return IOType.STRING;
     }
 }

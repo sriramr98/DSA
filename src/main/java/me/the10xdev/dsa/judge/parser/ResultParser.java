@@ -1,11 +1,9 @@
 package me.the10xdev.dsa.judge.parser;
 
-import jakarta.annotation.Nonnull;
 import me.the10xdev.dsa.exceptions.parse.ParsingException;
-import me.the10xdev.dsa.judge.parser_output.ParserOutput;
 
-public interface ResultParser {
+public interface ResultParser<ParseOutputType> {
 
-    ParserOutput parse(String input) throws ParsingException;
+    ParseOutputType parse(String input) throws ParsingException;
 
 }

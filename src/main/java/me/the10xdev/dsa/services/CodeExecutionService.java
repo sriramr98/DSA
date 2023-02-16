@@ -65,8 +65,8 @@ public class CodeExecutionService {
 
         try {
             ResultParser parser = parserFactory.getFactory(outputType);
-            ParserOutput parsedUserOutput = parser.parse(result.output());
-            ParserOutput expectedParsedOutput = parser.parse(result.testCase().getOutput());
+            ParserOutput parsedUserOutput = (ParserOutput) parser.parse(result.output());
+            ParserOutput expectedParsedOutput = (ParserOutput) parser.parse(result.testCase().getOutput());
 
             ResultValidator validator = resultValidatorFactory.getValidator(outputType, validationType);
             boolean isValid = validator.validateExpectedWithActual(expectedParsedOutput, parsedUserOutput);

@@ -16,44 +16,25 @@ import java.util.List;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-public class FloatArrayParser implements ResultParser {
+public class FloatArrayParser extends ArrayParser<FloatArray, Float> {
+
     @Override
-    public FloatArray parse(String input) throws ParsingException {
+    boolean isValidType(JsonNode element) {
+       return TypeInferer.isFloat(element.asText());
+    }
 
-        JsonNode json;
-        try {
-            json = JsonParser.parse(input);
-        } catch (JsonProcessingException e) {
-            throw ParsingException.builder()
-                    .value(input)
-                    .expectedType(IOType.ARRAY_FLOAT)
-                    .foundType(TypeInferer.inferType(input))
-                    .build();
-        }
+    @Override
+    Float parseNode(JsonNode element) {
+        return Float.parseFloat(element.asText());
+    }
 
-        if (!json.isArray()) {
-            throw ParsingException.builder()
-                    .value(input)
-                    .expectedType(IOType.ARRAY_FLOAT)
-                    .foundType(IOType.OBJECT)
-                    .build();
-        }
+    @Override
+    FloatArray toArray(List<Float> values) {
+        return new FloatArray(values);
+    }
 
-        List<Float> parsedFloatArray = new ArrayList<>();
-
-        for (JsonNode element : json) {
-            if (!TypeInferer.isFloat(element.asText())) {
-                throw ParsingException.builder()
-                        .value(input)
-                        .expectedType(IOType.FLOAT)
-                        .foundType(TypeInferer.inferType(input))
-                        .build();
-            }
-
-            parsedFloatArray.add(Float.parseFloat(element.asText()));
-        }
-
-        return new FloatArray(parsedFloatArray);
-
+    @Override
+    IOType getExpectedArrayElementType() {
+        return IOType.FLOAT;
     }
 }
