@@ -1,36 +1,35 @@
-package me.the10xdev.dsa.parsers;
+package me.the10xdev.dsa.judge.parsers;
 
 import me.the10xdev.dsa.exceptions.parse.ParsingException;
-import me.the10xdev.dsa.judge.parser.BooleanArrayParser;
-import me.the10xdev.dsa.judge.parser_output.compound.BooleanArray;
+import me.the10xdev.dsa.judge.parser.IntArrayParser;
+import me.the10xdev.dsa.judge.parser_output.compound.IntegerArray;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class BooleanArrayParserTests {
+public class IntArrayParserTests {
 
-    private static BooleanArrayParser parser;
+    private static IntArrayParser parser;
 
     @BeforeAll
     static void setupParser() {
-        parser = new BooleanArrayParser();
+        parser = new IntArrayParser();
     }
 
     @Test
     void returnsParsedArrayForValidInput() {
 
-        String validInput = "[true, false]";
+        String validInput = "[1,2,3,4]";
 
-        BooleanArray parsedValue = assertDoesNotThrow(() -> parser.parse(validInput));
+        IntegerArray parsedValue = assertDoesNotThrow(() -> parser.parse(validInput));
 
-        List<Boolean> expected = List.of(true, false);
+        List<Integer> expected = List.of(1,2,3,4);
 
-        assertEquals(expected.size(), parsedValue.values().size());
-        assertIterableEquals(expected, parsedValue.values());
+        assertEquals(expected.size(), parsedValue.getValues().size());
+        assertIterableEquals(expected, parsedValue.getValues());
     }
 
     @Test
@@ -40,8 +39,8 @@ public class BooleanArrayParserTests {
     }
 
     @Test
-    void throwsForIntegerArray() {
-        assertParsingException("[2,4]");
+    void throwsForFloatArray() {
+        assertParsingException("[1.2, 2.5]");
     }
 
     @Test
@@ -50,8 +49,8 @@ public class BooleanArrayParserTests {
     }
 
     @Test
-    void throwForFloatElementTypeInArray() {
-        assertParsingException("[4.4, true]");
+    void throwForBooleanElementTypeInArray() {
+        assertParsingException("[4, true]");
     }
 
     @Test
@@ -65,8 +64,8 @@ public class BooleanArrayParserTests {
     }
 
     @Test
-    void throwForFloatInput() {
-        assertParsingException("123.423");
+    void throwForIntegerInput() {
+        assertParsingException("123");
     }
 
     @Test
@@ -80,5 +79,5 @@ public class BooleanArrayParserTests {
                 () -> parser.parse(input)
         );
     }
-    
+
 }

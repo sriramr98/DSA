@@ -5,5 +5,8 @@ import me.the10xdev.dsa.judge.parser_output.ParserOutput;
 
 import java.util.List;
 
-public record ObjectArray(List<JsonNode> values) implements ParserOutput {
+public class ObjectArray extends ArrayOutput<JsonNode> {
+    public ObjectArray(List<JsonNode> values) {
+        super(values);
+    }
 }

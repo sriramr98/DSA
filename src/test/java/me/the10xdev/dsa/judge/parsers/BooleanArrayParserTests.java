@@ -1,8 +1,8 @@
-package me.the10xdev.dsa.parsers;
+package me.the10xdev.dsa.judge.parsers;
 
 import me.the10xdev.dsa.exceptions.parse.ParsingException;
-import me.the10xdev.dsa.judge.parser.FloatArrayParser;
-import me.the10xdev.dsa.judge.parser_output.compound.FloatArray;
+import me.the10xdev.dsa.judge.parser.BooleanArrayParser;
+import me.the10xdev.dsa.judge.parser_output.compound.BooleanArray;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -11,26 +11,26 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class FloatArrayParserTests {
+public class BooleanArrayParserTests {
 
-    private static FloatArrayParser parser;
+    private static BooleanArrayParser parser;
 
     @BeforeAll
     static void setupParser() {
-        parser = new FloatArrayParser();
+        parser = new BooleanArrayParser();
     }
 
     @Test
     void returnsParsedArrayForValidInput() {
 
-        String validInput = "[1.2,2.4,3.5,4.5]";
+        String validInput = "[true, false]";
 
-        FloatArray parsedValue = assertDoesNotThrow(() -> parser.parse(validInput));
+        BooleanArray parsedValue = assertDoesNotThrow(() -> parser.parse(validInput));
 
-        List<Float> expected = List.of(1.2f,2.4f,3.5f,4.5f);
+        List<Boolean> expected = List.of(true, false);
 
-        assertEquals(expected.size(), parsedValue.values().size());
-        assertIterableEquals(expected, parsedValue.values());
+        assertEquals(expected.size(), parsedValue.getValues().size());
+        assertIterableEquals(expected, parsedValue.getValues());
     }
 
     @Test
@@ -50,7 +50,7 @@ public class FloatArrayParserTests {
     }
 
     @Test
-    void throwForBooleanElementTypeInArray() {
+    void throwForFloatElementTypeInArray() {
         assertParsingException("[4.4, true]");
     }
 

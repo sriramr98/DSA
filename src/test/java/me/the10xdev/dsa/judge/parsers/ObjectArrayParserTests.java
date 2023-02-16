@@ -1,41 +1,50 @@
-package me.the10xdev.dsa.parsers;
+package me.the10xdev.dsa.judge.parsers;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import me.the10xdev.dsa.exceptions.parse.ParsingException;
-import me.the10xdev.dsa.judge.parser.CharArrayParser;
-import me.the10xdev.dsa.judge.parser_output.compound.CharArray;
+import me.the10xdev.dsa.judge.parser.BooleanArrayParser;
+import me.the10xdev.dsa.judge.parser.ObjectArrayParser;
+import me.the10xdev.dsa.judge.parser_output.compound.ObjectArray;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class CharArrayParserTests {
+public class ObjectArrayParserTests {
 
-    private static CharArrayParser parser;
+    private static ObjectArrayParser parser;
 
     @BeforeAll
     static void setupParser() {
-        parser = new CharArrayParser();
+        parser = new ObjectArrayParser();
     }
 
     @Test
     void returnsParsedArrayForValidInput() {
 
-        String validInput = "[\"a\", \"b\"]";
+        String validInput = "[{\"key\": \"value\"}, {\"key\": \"value\"}]";
 
-        CharArray parsedValue = assertDoesNotThrow(() -> parser.parse(validInput));
+        ObjectArray parsedValue = assertDoesNotThrow(() -> parser.parse(validInput));
 
-        List<Character> expected = List.of('a', 'b');
+        List<String> expectedList = List.of("{\"key\":\"value\"}", "{\"key\":\"value\"}");
+        List<String> actualList = parsedValue.getValues().stream().map(JsonNode::toString).toList();
 
-        assertEquals(expected.size(), parsedValue.values().size());
-        assertIterableEquals(expected, parsedValue.values());
+        assertEquals(expectedList.size(), actualList.size());
+        assertIterableEquals(expectedList, actualList);
+
     }
 
     @Test
     void doesNotThrowForEmptyArray() {
         String input = "[]";
+        assertDoesNotThrow(() -> parser.parse(input));
+    }
+
+    @Test
+    void doesNotThrowForEmptyObjectInArray() {
+        String input = "[{}]";
         assertDoesNotThrow(() -> parser.parse(input));
     }
 
@@ -60,11 +69,6 @@ public class CharArrayParserTests {
     }
 
     @Test
-    void throwForCharInput() {
-        assertParsingException("a");
-    }
-
-    @Test
     void throwForBoolInput() {
         assertParsingException("true");
     }
@@ -85,5 +89,5 @@ public class CharArrayParserTests {
                 () -> parser.parse(input)
         );
     }
-    
+
 }

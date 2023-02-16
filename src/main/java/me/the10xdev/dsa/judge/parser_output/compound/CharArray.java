@@ -4,6 +4,8 @@ import me.the10xdev.dsa.judge.parser_output.ParserOutput;
 
 import java.util.List;
 
-public record CharArray(List<Character> values) implements ParserOutput {
-
+public class CharArray extends ArrayOutput<Character> {
+    public CharArray(List<Character> values) {
+        super(values);
+    }
 }

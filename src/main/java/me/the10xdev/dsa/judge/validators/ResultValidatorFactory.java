@@ -1,10 +1,8 @@
 package me.the10xdev.dsa.judge.validators;
 
 import lombok.AllArgsConstructor;
-import me.the10xdev.dsa.judge.validators.int_array.IntegerArrayContainsValidator;
-import me.the10xdev.dsa.judge.validators.int_array.IntegerArrayOrderedValidator;
-import me.the10xdev.dsa.judge.validators.string_array.StringArrayContainsValidator;
-import me.the10xdev.dsa.judge.validators.string_array.StringArrayExactValidator;
+import me.the10xdev.dsa.judge.parser_output.compound.IntegerArray;
+import me.the10xdev.dsa.judge.parser_output.compound.StringArray;
 import me.the10xdev.dsa.types.IOType;
 import me.the10xdev.dsa.types.ValidationType;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -16,20 +14,15 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class ResultValidatorFactory {
 
-    private final IntegerArrayContainsValidator integerArrayContainsValidator;
-    private final IntegerArrayOrderedValidator integerArrayOrderedValidator;
-    private final StringArrayExactValidator stringArrayExactValidator;
-    private final StringArrayContainsValidator stringArrayContainsValidator;
-
     public ResultValidator getValidator(IOType type, ValidationType validationType) {
         return switch (type) {
             case ARRAY_INT -> switch (validationType) {
-                case EXACT_MATCH -> integerArrayOrderedValidator;
-                case CONTAINS_MATCH -> integerArrayContainsValidator;
+                case EXACT_MATCH -> new ExactArrayValidator<IntegerArray, Integer>();
+                case CONTAINS_MATCH -> new ContainsArrayValidator<IntegerArray, Integer>();
             };
             case ARRAY_STRING -> switch (validationType) {
-                case EXACT_MATCH -> stringArrayExactValidator;
-                case CONTAINS_MATCH -> stringArrayContainsValidator;
+                case EXACT_MATCH -> new ExactArrayValidator<StringArray, String>();
+                case CONTAINS_MATCH -> new ContainsArrayValidator<StringArray, String>();
             };
             default -> throw new RuntimeException("Invalid Type : " + type.name());
         };

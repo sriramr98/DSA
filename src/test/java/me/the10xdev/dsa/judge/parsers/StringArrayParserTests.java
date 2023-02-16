@@ -1,4 +1,4 @@
-package me.the10xdev.dsa.parsers;
+package me.the10xdev.dsa.judge.parsers;
 
 import me.the10xdev.dsa.exceptions.parse.ParsingException;
 import me.the10xdev.dsa.judge.parser.StringArrayParser;
@@ -28,8 +28,8 @@ public class StringArrayParserTests {
 
         List<String> expected = List.of("abc", "def");
 
-        assertEquals(expected.size(), parsedValue.value().size());
-        assertIterableEquals(expected, parsedValue.value());
+        assertEquals(expected.size(), parsedValue.getValues().size());
+        assertIterableEquals(expected, parsedValue.getValues());
 
     }
 

@@ -1,4 +1,4 @@
-package me.the10xdev.dsa.parsers;
+package me.the10xdev.dsa.judge.parsers;
 
 import me.the10xdev.dsa.exceptions.parse.ParsingException;
 import me.the10xdev.dsa.judge.parser.IntParser;

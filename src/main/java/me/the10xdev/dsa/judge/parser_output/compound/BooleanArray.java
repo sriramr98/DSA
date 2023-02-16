@@ -4,5 +4,8 @@ import me.the10xdev.dsa.judge.parser_output.ParserOutput;
 
 import java.util.List;
 
-public record BooleanArray(List<Boolean> values) implements ParserOutput {
+public class BooleanArray extends ArrayOutput<Boolean> {
+    public BooleanArray(List<Boolean> values) {
+        super(values);
+    }
 }
